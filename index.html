@@ -83,6 +83,7 @@
 
       const ROWS_COUNT = 10
       const COLS_COUNT = 10
+      const BOMS_QNT = 10
 
       let defeat = false
       let victory = false
@@ -107,17 +108,45 @@
       // TODO: Task 1 - add some bombs at fixed positions.
       //
 
-      cells[0][8].isBomb = true
-      cells[4][1].isBomb = true
-      cells[7][3].isBomb = true
-      cells[2][8].isBomb = true
-      cells[6][1].isBomb = true
+      // cells[0][8].isBomb = true
+      // cells[4][1].isBomb = true
+      // cells[7][3].isBomb = true
+      // cells[2][8].isBomb = true
+      // cells[6][1].isBomb = true
 
       //
       // TODO: Task 2 - Comment out the code of task 1. Instead of adding bombs in fixed places, add 10 of them in random places.
       //                Add a BOMBS_COUNT constant so that you can easily change the amount of bombs placed. Put it next to the
       //                other constants.
       //
+
+      const addBombPositions = () => {
+        let bombPositions = [];
+
+        do {
+          const rowPosition = Math.floor(Math.random() * ROWS_COUNT);
+          const cellPosition = Math.floor(Math.random() * COLS_COUNT);
+          
+          if (
+            !bombPositions.length || 
+            bombPositions.every(positionItem => positionItem[0] !== rowPosition || positionItem[1] !== cellPosition)
+            ) {
+              bombPositions.push([rowPosition, cellPosition])
+            }
+        } while (bombPositions.length < BOMS_QNT);
+
+        return bombPositions;
+      }
+      
+
+      const addBombs = () => {
+        const bombPositions = addBombPositions();
+        bombPositions.forEach((position, index) => {
+          cells[bombPositions[index][0]][bombPositions[index][1]].isBomb = true
+        })
+      }
+
+      addBombs()
 
       // Once the game has been initialized, we "render" it.
       render()
